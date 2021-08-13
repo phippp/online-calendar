@@ -3,10 +3,8 @@
 @section('content')
     <div class="flex justify-center">
         <div class="w-8/12 bg-white p-6 rounded-lg">
-
             <h1 class="text-3xl font-bold mb-6">{{$month}}</h1>
-
-            <table class="table-fixed w-full p-8"><thead><tr>
+            <table class="table-fixed w-full p-8 calendar"><thead><tr>
             @foreach($headers as $header)
                 <th>{{$header}}</th>
             @endforeach
@@ -20,16 +18,15 @@
                 <tr>
                     @for($i = 0; $i < $start; $i++)
                         @php($count++)
-                        <td><div class="h-24 rounded-lg bg-gray-400"></div></td>
+                        <td><div class="h-36 rounded-lg bg-gray-400"></div></td>
                     @endfor
                     @for($i = 1; $i <= $days; $i++)
                         @php($count++)
-                        <td><div class="h-24 rounded-lg bg-gray-50">
+                        <td><div class="h-36 rounded-lg bg-gray-50">
                             <div>{{$i}}</div>
+                            {{-- Add if start --}}
                             @foreach($events as $event)
-                                @if($event->startDate == $first->format('Y-m-d'))
-
-
+                                @if($first->format('Y-m-d') == $event->startDate)
                                     @php($c = 0)
                                     @while($display[$c] != -1)
                                         @php($c++)
@@ -38,25 +35,35 @@
                                         @endif
                                     @endwhile
                                     @if($c < count($display))
-                                        @if($event->days() == 1)
-                                            <div style="background:#6e5a5a;border-radius: 25px 25px 25px 25px;padding:3px">{{$event->eventName}}</div>
-                                        @else
-                                            @php($display[$c] = $event->id)
-                                            @php($e[] = $event->id)
-                                            <div style="background:#6e5a5a;border-radius: 25px 0 0 25px;padding:3px">{{$event->eventName}} - {{$event->days()}}</div>
-                                        @endif
+                                        @php($display[$c] = $event->id)
                                     @endif
-                                @elseif($event->endDate == $first->format('Y-m-d'))
-                                    @if(in_array($event->id,$display))
-                                        @php($t = array_search($event->id, $display))
-                                        @php($display[$t] = -1)
-                                    @endif
-                                    <div style="background:#6e5a5a;color:#6e5a5a;border-radius: 0 25px 25px 0;padding:3px"><br></div>
-                                @elseif(in_array($event->id,$display))
-                                    <div style="background:#6e5a5a;color:#6e5a5a;padding:3px"><br></div>
+                                    @php($e[$event->id] = $event)
                                 @endif
-
-
+                            @endforeach
+                            {{-- Display events --}}
+                            @foreach($display as $item)
+                                @if($item == -1)
+                                    <div class="blank event"><br></div>
+                                @else
+                                    <div style="background:#8b5050;" class="event @if($count%7 == 1){{'new-line'}}@endif @if($e[$item]->startDate == $first->format('Y-m-d')){{'start'}}@endif @if($e[$item]->endDate == $first->format('Y-m-d') || $e[$item]->endDate == null){{'end'}}@endif">
+                                        @if($e[$item]->startDate == $first->format('Y-m-d')) {{ $e[$item]->eventName }} @else <br> @endif
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if(count($e) > count($display))
+                                <div class="bg-gray-300" style="border-radius: 25px 25px 25px 25px;padding:3px;margin-top:3px;">+ {{ count($e) - count($display)}} more</div>
+                            @endif
+                            {{-- Remove events --}}
+                            @foreach($events as $event)
+                                @if($first->format('Y-m-d') == $event->endDate || $event->endDate == null)
+                                    @if(in_array($event->id,$display))
+                                        @php($ind = array_search($event->id,$display))
+                                        @php($display[$ind] = -1)
+                                        <?php
+                                            unset($e[$event->id]);
+                                        ?>
+                                    @endif
+                                @endif
                             @endforeach
                         </div></td>
                         @if($count % 7 == 0)
@@ -66,7 +73,7 @@
                     @endfor
                     @while($count % 7 != 0)
                         @php($count++)
-                        <td><div class="h-24 rounded-lg bg-gray-400"></div></td>
+                        <td><div class="h-36 rounded-lg bg-gray-400"></div></td>
                     @endwhile
                 <tr>
             </tbody>

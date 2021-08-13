@@ -1,0 +1,36 @@
+.event{
+    padding:3px;
+    margin-top:3px;
+    width:calc(100% + 5px);
+    margin-left: -5px;
+}
+
+.new-line{
+    width:100%;
+    margin-left: 0;
+}
+
+.start{
+    margin-left:0;
+    width: 100%;
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+    text-align: center;
+}
+
+.end{
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.blank{
+    background: transparent;
+}
+
+.calendar tr{
+    overflow: hidden;
+}
+
+.calendar div.rounded-lg{
+    overflow: visible;
+}
