@@ -28,7 +28,8 @@
                             <div>{{$i}}</div>
                             @foreach($events as $event)
                                 @if($event->startDate == $first->format('Y-m-d'))
-                                    @php($e[] = $event->id)
+
+
                                     @php($c = 0)
                                     @while($display[$c] != -1)
                                         @php($c++)
@@ -37,12 +38,25 @@
                                         @endif
                                     @endwhile
                                     @if($c < count($display))
-                                        @php($display[$c] = $event->id)
-                                        <div style="background:#6e5a5a;border-radius: 25px 0 0 25px;padding:3px">{{$event->eventName}}</div>
+                                        @if($event->days() == 1)
+                                            <div style="background:#6e5a5a;border-radius: 25px 25px 25px 25px;padding:3px">{{$event->eventName}}</div>
+                                        @else
+                                            @php($display[$c] = $event->id)
+                                            @php($e[] = $event->id)
+                                            <div style="background:#6e5a5a;border-radius: 25px 0 0 25px;padding:3px">{{$event->eventName}} - {{$event->days()}}</div>
+                                        @endif
                                     @endif
                                 @elseif($event->endDate == $first->format('Y-m-d'))
-                                    <div style="background:#6e5a5a;color:#6e5a5a;border-radius: 0 25px 25px 0;padding:3px">TEXT</div>
+                                    @if(in_array($event->id,$display))
+                                        @php($t = array_search($event->id, $display))
+                                        @php($display[$t] = -1)
+                                    @endif
+                                    <div style="background:#6e5a5a;color:#6e5a5a;border-radius: 0 25px 25px 0;padding:3px"><br></div>
+                                @elseif(in_array($event->id,$display))
+                                    <div style="background:#6e5a5a;color:#6e5a5a;padding:3px"><br></div>
                                 @endif
+
+
                             @endforeach
                         </div></td>
                         @if($count % 7 == 0)
