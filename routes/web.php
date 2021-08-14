@@ -7,6 +7,9 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserEventsContoller;
+use App\Http\Controllers\CalendarEventController;
+
+Route::get('/calendar/{event:eventName}', [CalendarEventController::class, 'index'])->name('calendar.event');
 
 Route::get('/calendar/{year?}/{month?}', [CalendarController::class, 'index'])->name('calendar');
 

@@ -57,9 +57,11 @@
                                 @if($item == -1)
                                     <div class="blank event"><br></div>
                                 @else
-                                    <div style="background:#8b5050;" class="event @if($count%7 == 1){{'new-line'}}@endif @if($e[$item]->startDate == $first->format('Y-m-d')){{'start'}}@endif @if($e[$item]->endDate == $first->format('Y-m-d') || $e[$item]->endDate == null){{'end'}}@endif">
-                                        @if($e[$item]->startDate == $first->format('Y-m-d')) {{ $e[$item]->eventName }} @else <br> @endif
-                                    </div>
+                                    <a href="{{route('calendar.event',$e[$item])}}">
+                                        <div style="background:#8b5050;" class="event @if($count%7 == 1){{'new-line'}}@endif @if($e[$item]->startDate == $first->format('Y-m-d')){{'start'}}@endif @if($e[$item]->endDate == $first->format('Y-m-d') || $e[$item]->endDate == null){{'end'}}@endif">
+                                            @if($e[$item]->startDate == $first->format('Y-m-d')) {{ $e[$item]->eventName }} @else <br> @endif
+                                        </div>
+                                    </a>
                                 @endif
                             @endforeach
                             @if(count($e) > count($display))
