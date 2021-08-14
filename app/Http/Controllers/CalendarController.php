@@ -16,14 +16,18 @@ class CalendarController extends Controller
         $this->middleware(['auth']);
     }
     //
-    public function index()
+    public function index($year = null,$month = null)
     {
-        $date = Carbon::now();
+        if(!(isset($month) || isset($year)))
+            $date = Carbon::now();
+        else
+            $date = Carbon::create((isset($year)?$year:Carbon::now()->year), (isset($month)?$month:Carbon::now()->month));
         //Note 0 = Sunday, 6 = Saturday
         $events = Event::where(['user_id' => auth()->user()->id])->whereBetween('created_at', [$date->firstOfMonth()->format('Y-m-d'),$date->lastOfMonth()->format('Y-m-d')])->orderBy('startDate','asc')->get();
         return view('calendar',[
             'headers' => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             'month' => $date->format('F'),
+            'year' => $date->year,
             'days' => $date->daysInMonth,
             'start' => $date->startOfMonth()->dayOfWeek,
             'first' => $date->startOfMonth(),

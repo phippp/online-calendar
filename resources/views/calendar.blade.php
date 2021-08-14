@@ -3,7 +3,19 @@
 @section('content')
     <div class="flex justify-center">
         <div class="w-8/12 bg-white p-6 rounded-lg">
-            <h1 class="text-3xl font-bold mb-6">{{$month}}</h1>
+            @php
+               $before = \Carbon\Carbon::parse($first)->subMonth();
+               $after = \Carbon\Carbon::parse($first)->addMonth();
+            @endphp
+            <div class="mb-4">
+                <h1 class="text-3xl font-bold mb-6 w-max">{{ $month }} {{ $year }}</h1>
+                <a class="text-blue-400" href="{{route('calendar',['month'=>$before->month, 'year'=>$before->year])}}">
+                    <button class="btn"> {{$before->format('F')}} </button>
+                </a>
+                <a class="ml-4 text-blue-400" href="{{route('calendar',['month'=>$after->month, 'year'=>$after->year])}}">
+                    <button> {{$after->format('F')}} </button>
+                </a>
+            </div>
             <table class="table-fixed w-full p-8 calendar"><thead><tr>
             @foreach($headers as $header)
                 <th>{{$header}}</th>

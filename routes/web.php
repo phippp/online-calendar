@@ -8,7 +8,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserEventsContoller;
 
-Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+Route::get('/calendar/{year?}/{month?}', [CalendarController::class, 'index'])->name('calendar');
 
 Route::get('/user/{user:username}/events',[UserEventsContoller::class, 'index'])->name('user.events');
 
