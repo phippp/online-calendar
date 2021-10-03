@@ -23,7 +23,7 @@ class CalendarController extends Controller
         else
             $date = Carbon::create((isset($year)?$year:Carbon::now()->year), (isset($month)?$month:Carbon::now()->month));
         //Note 0 = Sunday, 6 = Saturday
-        $events = Event::where(['user_id' => auth()->user()->id])->whereBetween('created_at', [$date->firstOfMonth()->format('Y-m-d'),$date->lastOfMonth()->format('Y-m-d')])->orderBy('startDate','asc')->get();
+        $events = Event::where(['user_id' => auth()->user()->id])->whereBetween('startDate', [$date->firstOfMonth()->format('Y-m-d'),$date->lastOfMonth()->format('Y-m-d')])->orderBy('startDate','asc')->get();
         return view('calendar',[
             'headers' => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             'month' => $date->format('F'),

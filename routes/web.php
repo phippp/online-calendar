@@ -6,6 +6,7 @@ use App\Http\Controllers\EventsController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UpcomingController;
 use App\Http\Controllers\UserEventsContoller;
 use App\Http\Controllers\CalendarEventController;
 
@@ -27,6 +28,4 @@ Route::post('/login', [LoginController::class, 'store']);
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
+Route::get('/', [UpcomingController::class, 'index'])->name('index');
