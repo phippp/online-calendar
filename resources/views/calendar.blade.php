@@ -38,7 +38,7 @@
                             <div>{{$i}}</div>
                             {{-- Add if start --}}
                             @foreach($events as $event)
-                                @if($first->format('Y-m-d') == $event->startDate)
+                                @if($first->format('d') == \Carbon\Carbon::parse($event->startDate)->format('d'))
                                     @php($c = 0)
                                     @while($display[$c] != -1)
                                         @php($c++)
@@ -58,8 +58,8 @@
                                     <div class="blank event"><br></div>
                                 @else
                                     <a href="{{route('calendar.event',$e[$item])}}">
-                                        <div style="background:#8b5050;" class="event @if($count%7 == 1){{'new-line'}}@endif @if($e[$item]->startDate == $first->format('Y-m-d')){{'start'}}@endif @if($e[$item]->endDate == $first->format('Y-m-d') || $e[$item]->endDate == null){{'end'}}@endif">
-                                            @if($e[$item]->startDate == $first->format('Y-m-d')) {{ $e[$item]->eventName }} @else <br> @endif
+                                        <div style="background:#8b5050;" class="event @if($count%7 == 1){{'new-line'}}@endif @if(\Carbon\Carbon::parse($e[$item]->startDate)->format('d') == $first->format('d')){{'start'}}@endif @if(\Carbon\Carbon::parse($e[$item]->endDate)->format('d') == $first->format('d') || $e[$item]->endDate == null){{'end'}}@endif">
+                                            @if(\Carbon\Carbon::parse($e[$item]->startDate)->format('d') == $first->format('d')) {{ $e[$item]->eventName }} @else <br> @endif
                                         </div>
                                     </a>
                                 @endif
@@ -69,7 +69,7 @@
                             @endif
                             {{-- Remove events --}}
                             @foreach($events as $event)
-                                @if($first->format('Y-m-d') == $event->endDate || $event->endDate == null)
+                                @if($first->format('d') == \Carbon\Carbon::parse($event->endDate)->format('d') || $event->endDate == null)
                                     @if(in_array($event->id,$display))
                                         @php($ind = array_search($event->id,$display))
                                         @php($display[$ind] = -1)

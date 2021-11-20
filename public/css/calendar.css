@@ -3,6 +3,9 @@
     margin-top:3px;
     width:calc(100% + 5px);
     margin-left: -5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .new-line{
